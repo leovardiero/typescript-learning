@@ -1,21 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
-function decorator(
-  classPrototype: any,
-  methodName: string,
-  descriptor: PropertyDescriptor,
-): any {
+function decorator(classPrototype: any, name: string | symbol): any {
   console.log(classPrototype);
-  console.log(methodName);
-  console.log(descriptor);
+  console.log(name);
+  let propertyValue: any;
   return {
-    value: function (...args: string[]) {
-      return args[0].toUpperCase();
+    get: () => propertyValue,
+    set: (value: any) => {
+      propertyValue = value.split('').reverse().join('');
     },
   };
 }
 
-export class OnePerson {
+export class Person2 {
+  @decorator
   name: string;
   lastName: string;
   age: number;
@@ -26,7 +23,6 @@ export class OnePerson {
     this.age = age;
   }
 
-  @decorator
   method(msg: string): string {
     return `${this.name} ${this.lastName}: ${msg}`;
   }
@@ -44,7 +40,7 @@ export class OnePerson {
   }
 }
 
-const pessoa = new OnePerson('Leo', 'Vardiero', 28);
+const pessoa = new Person2('Leo', 'Vardiero', 28);
 
 const method = pessoa.method('Olá mundo');
 

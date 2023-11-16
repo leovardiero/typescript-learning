@@ -2,17 +2,12 @@
 
 function decorator(
   classPrototype: any,
-  methodName: string,
-  descriptor: PropertyDescriptor,
+  methodName: string | symbol,
+  index: number,
 ): any {
   console.log(classPrototype);
   console.log(methodName);
-  console.log(descriptor);
-  return {
-    value: function (...args: string[]) {
-      return args[0].toUpperCase();
-    },
-  };
+  console.log(index);
 }
 
 export class OnePerson {
@@ -26,8 +21,7 @@ export class OnePerson {
     this.age = age;
   }
 
-  @decorator
-  method(msg: string): string {
+  method(@decorator msg: string): string {
     return `${this.name} ${this.lastName}: ${msg}`;
   }
 
